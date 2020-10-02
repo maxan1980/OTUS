@@ -1,0 +1,4 @@
+# whitelist
+branches:
+  only:
+    - hw_1_0
