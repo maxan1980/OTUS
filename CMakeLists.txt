@@ -12,16 +12,16 @@ configure_file(version.h.in version.h)
 
 add_executable(ip_filter_cli main.cpp)
 add_library(ip_filter ip_filter.cpp)
-add_executable(test_version test_version.cpp)
+add_executable(test_filter_ip test_filter_ip.cpp)
 
-set_target_properties(ip_filter_cli ip_filter test_version PROPERTIES
+set_target_properties(ip_filter_cli ip_filter test_filter_ip PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
 target_include_directories(ip_filter
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
-set_target_properties(test_version PROPERTIES
+set_target_properties(test_filter_ip PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
@@ -29,7 +29,7 @@ set_target_properties(test_version PROPERTIES
 target_link_libraries(ip_filter_cli PRIVATE
     ip_filter
 )
-target_link_libraries(test_version
+target_link_libraries(test_filter_ip
     ${Boost_LIBRARIES}
     ip_filter
 )
@@ -41,7 +41,7 @@ if (MSVC)
     target_compile_options(ip_filter PRIVATE
         /W4
     )
-    target_compile_options(test_version PRIVATE
+    target_compile_options(test_filter_ip PRIVATE
         /W4
     )
 else ()
@@ -51,7 +51,7 @@ else ()
     target_compile_options(ip_filter PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(test_version PRIVATE
+    target_compile_options(test_filter_ip PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
@@ -72,5 +72,5 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_version test_version)
+add_test(test_filter_ip test_filter_ip)
 
