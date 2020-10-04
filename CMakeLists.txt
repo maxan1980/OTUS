@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.2)
 
+project(ip_filter C CXX)
+
 if($ENV{TRAVIS_BUILD_NUMBER})
     project(ip_filter VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 else()
     project(ip_filter VERSION 0.0.100)
 endif()
 
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+find_package(Threads REQUIRED)
+
+find_package(GTest REQUIRED)
+
+set(PThreadLib -pthread)
 
 configure_file(version.h.in version.h)
 
@@ -21,20 +27,26 @@ set_target_properties(ip_filter_cli ip_filter test_filter_ip PROPERTIES
 target_include_directories(ip_filter
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
-set_target_properties(test_filter_ip PROPERTIES
-    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-)
 
 target_link_libraries(ip_filter_cli PRIVATE
     ip_filter
 )
-target_link_libraries(test_filter_ip
-    ${Boost_LIBRARIES}
+
+target_include_directories(
+    test_filter_ip PRIVATE
+    ${GTEST_INCLUE__DIRS}
+)
+
+target_link_libraries(
+    test_filter_ip PRIVATE
+    ${GTEST_BOTH_LIBRARIES}
+    pthread
     ip_filter
 )
 
 if (MSVC)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
     target_compile_options(ip_filter_cli PRIVATE
         /W4
     )
