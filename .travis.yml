@@ -4,7 +4,7 @@ before_script:
 - OLD_PATH=$PWD
 - cd /usr/src/gtest
 - echo $PWD
-- sudo cmake CMakeLists.txt
+- sudo env "PATH=$PATH" cmake CMakeLists.txt
 - sudo make
 - sudo cp *.a /usr/lib
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
