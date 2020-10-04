@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-if(DEFINED {TRAVIS_BUILD_NUMBER})
+if($ENV{TRAVIS_BUILD_NUMBER})
     project(ip_filter VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 else()
     project(ip_filter VERSION 0.0.100)
