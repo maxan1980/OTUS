@@ -2,7 +2,7 @@ language: cpp
 before_script:
 - sudo apt-get install libgtest-dev -y
 - OLD_PATH=$PWD
-- sudo cd /usr/src/gtest
+- cd /usr/src/gtest
 - sudo cmake CMakeLists.txt
 - sudo make
 - sudo cp *.a /usr/lib
