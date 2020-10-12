@@ -1,6 +1,8 @@
 #include "ip_filter.h"
+ #include <sstream>
+ #include <tuple>
 
-void IpAddress::add_address(std::string line) {
+void IpAddresses::add_address(const std::string& line) {
     int start_pos = line.find_first_not_of(' ');
     int end_pos = line.find_first_of('\t',start_pos);
 
@@ -23,15 +25,16 @@ void IpAddress::add_address(std::string line) {
         base.insert(ip);
 }
 
-std::vector<std::string> IpAddress::get_addr_base () {
+std::vector<std::string> IpAddresses::get_addr_base () const {
     std::vector<std::string> ret;
+    ret.reserve(base.size());
     for (auto it = base.rbegin(); it != base.rend();++it) {
         ret.push_back(it->get_string_addr());
     }
     return ret;
 }
 
-std::vector<std::string> IpAddress::find(int i1) {
+std::vector<std::string> IpAddresses::find(int i1) const {
     std::vector<std::string> ret;
     Ip ip_start;
     Ip ip_finish;
@@ -53,7 +56,7 @@ std::vector<std::string> IpAddress::find(int i1) {
     return ret;
 }
 
-std::vector<std::string> IpAddress::find(int i1,int i2) {
+std::vector<std::string> IpAddresses::find(int i1,int i2) const {
     std::vector<std::string> ret;
     Ip ip_start;
     Ip ip_finish;
@@ -78,7 +81,7 @@ std::vector<std::string> IpAddress::find(int i1,int i2) {
     return ret;
 }
 
-std::vector<std::string> IpAddress::find_any(int val) {
+std::vector<std::string> IpAddresses::find_any(int val) const {
     std::vector<std::string> ret;
     for (auto start = base.rbegin(); start!= base.rend(); ++start) {
         bool status = false;
@@ -94,12 +97,12 @@ std::vector<std::string> IpAddress::find_any(int val) {
     return ret;
 }
 
-bool IpAddress::Ip::operator<(const IpAddress::Ip& other) const {
+bool IpAddresses::Ip::operator<(const IpAddresses::Ip& other) const {
     return std::make_tuple(addr[0],addr[1],addr[2],addr[3]) < 
            std::make_tuple(other.addr[0],other.addr[1],other.addr[2],other.addr[3]);
 }
 
-std::string IpAddress::Ip::get_string_addr() const {
+std::string IpAddresses::Ip::get_string_addr() const {
     std::string str;
     for (int i=0; i < 4; ++i) {
         str += std::to_string(addr[i]);

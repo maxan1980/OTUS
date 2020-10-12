@@ -2,8 +2,6 @@
 #include <vector>
 #include <string>
 #include "ip_filter.h"
-
-//#include <boost/test/unit_test.hpp>
 #include <gtest/gtest.h>
 
 std::vector<std::string> input = {  "113.162.145.156	111	0",
@@ -39,7 +37,7 @@ TEST(sorted_fill, sorted_fill) {
                                     "67.232.81.208",
                                     "23.240.215.189",
                                     "1.29.168.152" };
-    IpAddress ip;
+    IpAddresses ip;
     for (auto& v: input) {
         ip.add_address(v);
     }
@@ -53,7 +51,7 @@ TEST(test_valid_sorted_find1, test_valid_sorted_find1) {
     std::vector<std::string> result = { "185.182.81.131",
                                         "185.89.100.249",
                                         "185.69.186.168" };
-    IpAddress ip;
+    IpAddresses ip;
     for (auto& v: input) {
         ip.add_address(v);
     }
@@ -63,7 +61,7 @@ TEST(test_valid_sorted_find1, test_valid_sorted_find1) {
 
 TEST(test_valid_sorted_find2, test_valid_sorted_find2) {
     std::vector<std::string> result = { "68.45.152.8" };
-    IpAddress ip;
+    IpAddresses ip;
     for (auto& v: input) {
         ip.add_address(v);
     }
@@ -75,7 +73,7 @@ TEST(test_valid_sorted_find2, test_valid_sorted_find2) {
 TEST(test_valid_sorted_find_any, test_valid_sorted_find_any) {
     std::vector<std::string> result = { "179.210.145.4",
                                         "114.221.179.117"};
-    IpAddress ip;
+    IpAddresses ip;
     for (auto& v: input) {
         ip.add_address(v);
     }

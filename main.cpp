@@ -3,7 +3,7 @@
 #include "ip_filter.h"
 
 int main(void) {
-    IpAddress ip_addr;
+    IpAddresses ip_addr;
     std::string line;
     while (std::getline(std::cin, line)) {
         ip_addr.add_address(std::move(line));
