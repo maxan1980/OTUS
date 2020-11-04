@@ -25,6 +25,8 @@ set_target_properties(allocator PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+set(CMAKE_CXX_STANDARD 17)
+
 target_include_directories(allocator
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
