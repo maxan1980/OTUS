@@ -1,31 +1,59 @@
+#include "custom_allocator.h"
 #include <iostream>
-#include <string>
-#include "ip_filter.h"
+#include <map>
+#include <utility>
+#include <vector>
+#include <list>
+#include "container.h"
+
+int factorial(int i) {
+    int res = 1;
+    while (i) {
+        res*=i--;
+    }
+    return res;
+}
 
 int main(void) {
-    IpAddresses ip_addr;
-    std::string line;
-    while (std::getline(std::cin, line)) {
-        ip_addr.add_address(std::move(line));
+    auto std_map_alloc = std::map<int,int>{}; 
+    for ( int i=0; i < 10; ++i ) {
+        std_map_alloc.insert({i,factorial(i)});
     }
 
-    auto base = ip_addr.get_addr_base();
-    for (auto& i : base) {
-        std::cout << i << std::endl;
+    auto custom_map_alloc = std::map<int,int,std::less<int>,custom_allocator<std::pair<const int,int>,10>>{}; 
+    for ( int i=0; i < 10; ++i ) {
+        custom_map_alloc.insert({i,factorial(i)});
     }
 
-    auto res_1 = ip_addr.find(1);
-    for (auto& i : res_1) {
-        std::cout << i << std::endl;
+    for (auto& x : std_map_alloc) {
+        std::cout << x.first << " " << x.second << std::endl;
+    }
+    std::cout << std::endl;
+
+    for (auto& x : custom_map_alloc) {
+        std::cout << x.first << " " << x.second << std::endl;
     }
 
-    auto res_2 = ip_addr.find(46,70);
-    for (auto& i : res_2) {
-        std::cout << i << std::endl;
+    std::cout << std::endl;
+
+    auto mas = MContainer<int>{};
+    for ( int i=0; i < 10; ++i ) {
+        mas.push_back(i);
     }
 
-    auto res_any = ip_addr.find_any(46);
-    for (auto& i : res_any) {
-        std::cout << i << std::endl;
+    for (auto& v: mas) {
+        std::cout << v << std::endl;
     }
+
+    std::cout << std::endl;
+
+    auto mac = MContainer<int,custom_allocator<Node<int>,10>>();
+    for ( int i=0; i < 10; ++i ) {
+        mac.push_back(i);
+    }
+
+    for (auto& v: mac) {
+        std::cout << v << std::endl;
+    }
+    return 0;
 }

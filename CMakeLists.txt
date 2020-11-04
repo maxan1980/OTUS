@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(ip_filter C CXX)
+project(allocator C CXX)
 
 if($ENV{TRAVIS_BUILD_NUMBER})
-    project(ip_filter VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
+    project(allocator VERSION 0.0.$ENV{TRAVIS_BUILD_NUMBER})
 else()
-    project(ip_filter VERSION 0.0.100)
+    project(allocator VERSION 0.0.100)
 endif()
+
 
 find_package(Threads REQUIRED)
 
@@ -16,61 +17,50 @@ set(PThreadLib -pthread)
 
 configure_file(version.h.in version.h)
 
-add_executable(ip_filter_cli main.cpp)
-add_library(ip_filter ip_filter.cpp)
-add_executable(test_filter_ip test_filter_ip.cpp)
+add_executable(allocator main.cpp)
+add_executable(alloc_test alloc_test.cpp)
 
-set_target_properties(ip_filter_cli ip_filter test_filter_ip PROPERTIES
+set_target_properties(allocator PROPERTIES
     CXX_STANDARD 17
     CXX_STANDARD_REQUIRED ON
 )
-target_include_directories(ip_filter
+
+target_include_directories(allocator
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 
-target_link_libraries(ip_filter_cli PRIVATE
-    ip_filter
-)
-
 target_include_directories(
-    test_filter_ip PRIVATE
+    alloc_test PRIVATE
     ${GTEST_INCLUE__DIRS}
 )
 
 target_link_libraries(
-    test_filter_ip PRIVATE
+    alloc_test PRIVATE
     ${GTEST_BOTH_LIBRARIES}
     pthread
-    ip_filter
 )
 
 if (MSVC)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    target_compile_options(ip_filter_cli PRIVATE
+    target_compile_options(allocator PRIVATE
         /W4
     )
-    target_compile_options(ip_filter PRIVATE
-        /W4
-    )
-    target_compile_options(test_filter_ip PRIVATE
+    target_compile_options(alloc_test PRIVATE
         /W4
     )
 else ()
-    target_compile_options(ip_filter_cli PRIVATE
-        -Wall -Wextra -pedantic -Werror
+    target_compile_options(allocator PRIVATE
+        -Wall -Wextra -pedantic 
     )
-    target_compile_options(ip_filter PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-    target_compile_options(test_filter_ip PRIVATE
-        -Wall -Wextra -pedantic -Werror
+    target_compile_options(alloc_test PRIVATE
+        -Wall -Wextra -pedantic 
     )
 endif()
 
 
 
-install(TARGETS ip_filter_cli RUNTIME DESTINATION bin)
+install(TARGETS allocator RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -84,5 +74,5 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_filter_ip test_filter_ip)
+add_test(aloc_test aloc_test)
 

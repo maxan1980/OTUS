@@ -13,12 +13,12 @@ before_script:
 script:
 - cmake .
 - cmake --build .
-- cmake --build . --target test
+- cmake --build . --target alloc_test
 - cmake --build . --target package
 deploy:
   provider: script
   skip_cleanup: true
   script:
-  - curl -T ip_filter-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -umaxan1980:$BINTRAY_API_KEY "https://api.bintray.com/content/maxan1980/otus-cpp/otus/$TRAVIS_BUILD_NUMBER/ip_filter-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  - curl -T allocator-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -umaxan1980:$BINTRAY_API_KEY "https://api.bintray.com/content/maxan1980/otus-cpp/otus/$TRAVIS_BUILD_NUMBER/allocator-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
   on:
-     branch: hw_1_1
+     branch: hw_2_0
