@@ -1,6 +1,5 @@
-dist: xenial
+
 language: cpp
-compiler: gcc
 
 before_install:
   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
@@ -9,11 +8,6 @@ before_install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 90
 
-install: autoreconf -if
-
-script: ./configure && make -j4 && make test
-
-language: cpp
 before_script:
 - sudo apt-get install libgtest-dev -y
 - OLD_PATH=$PWD
@@ -25,6 +19,7 @@ before_script:
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
 - cd $OLD_PATH
+- g++ --version
 script:
 - cmake .
 - cmake --build .
