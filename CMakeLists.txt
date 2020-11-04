@@ -53,10 +53,10 @@ if (MSVC)
     )
 else ()
     target_compile_options(allocator PRIVATE
-        -Wall -Wextra -pedantic -std=c++17
+        -Wall -Wextra -pedantic
     )
     target_compile_options(alloc_test PRIVATE
-        -Wall -Wextra -pedantic -std=c++17
+        -Wall -Wextra -pedantic
     )
 endif()
 
